@@ -256,6 +256,10 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, k
 #################################################################################################################
 # one matrix MR with M has particular shape
 def solve_puzzle_with_MR(MR, n, k, threshold=35, tqdm_disable=False):
+    """
+    solve original template if MR = T @ R where T is a permutation matrix with
+    flip and R is a naive rotation matrix
+    """
     max_indices = min(n, 8)
     collect_vectors = []
     all_num = 0
@@ -263,7 +267,7 @@ def solve_puzzle_with_MR(MR, n, k, threshold=35, tqdm_disable=False):
         for i in (pbar:=tqdm(range(n-1), disable=tqdm_disable)):
             indices = np.random.choice(range(n), indices_num, replace=False)
             test_num = 0
-            while test_num < 10:
+            while test_num < 1:
                 M2 = random_perm_matrix(n)
                 M2R = M2 @ MR     
                 # get the submatrix i,j * i,j of MR
