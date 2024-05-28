@@ -156,11 +156,13 @@ def solve_puzzle_with_one_matrix_greedy(isometric_matrix:np.ndarray, dimension, 
 #################################################################################################################################
 ### n matrixes
 
-def solve_puzzle_with_n_matrix_known_places(isometric_matrixes:List[np.ndarray], bs, dimension, k, threshold=40, max_rtimes=1000, algorithm = "SVD", **kwargs):
+def solve_puzzle_with_n_matrix_known_places(isometric_matrixes:List[np.ndarray], bs, dimension, alpha, threshold=40, max_rtimes=1000, algorithm = "SVD", **kwargs):
     """
     kwargs: disable_tqdm, return_runtimes, k_each_matrix(default 1)
+
+    Solve puzzle under the constraint that the linear equation sampler always sample "correct" matrix M, i.e. M w \\approx 0 where w is original template vector
     """
-    positions_bs = [np.argsort(np.abs(b))[:kwargs.get("num_select_positions", dimension-k)] for b in bs]
+    positions_bs = [np.argsort(np.abs(b))[:kwargs.get("num_select_positions", dimension-alpha)] for b in bs]
     angle_min = 180
     run_times = 0
     get_result_times = 0
@@ -169,7 +171,7 @@ def solve_puzzle_with_n_matrix_known_places(isometric_matrixes:List[np.ndarray],
         isometric_matrixes_for_generate = isometric_matrixes
         positions_bs_for_generate = positions_bs
     elif algorithm == "LSA":
-        solver = lambda x: local_search_solver(dimension, k, x, iteration_number=1, disable_flag=True, threshold=kwargs.get("error_rate", 1e-1))
+        solver = lambda x: local_search_solver(dimension, alpha, x, iteration_number=1, disable_flag=True, threshold=kwargs.get("error_rate", 1e-1))
         isometric_matrixes_for_generate = [isometric_matrixes[i] @ isometric_matrixes[0].T for i in range(1, len(isometric_matrixes))]
         positions_bs_for_generate = [positions_bs[i] for i in range(1, len(isometric_matrixes))]
     else:
@@ -187,14 +189,14 @@ def solve_puzzle_with_n_matrix_known_places(isometric_matrixes:List[np.ndarray],
             if algorithm == "SVD":
                 assume_vector = null_vector
                 assume_b = np.matmul(matrix_1, assume_vector)
-                b = utils.decode_vector_with_k_nonzero_elements(assume_b, dimension, k)
+                b = utils.decode_vector_with_k_nonzero_elements(assume_b, dimension, alpha)
             else:
                 assume_b = b = null_vector
                 assume_vector = isometric_matrixes[0].T @ b
             # threshold determinant
             matrix_2 = isometric_matrixes[1] @ matrix_1.T
             assume_c = matrix_2 @ b
-            c = utils.decode_vector_with_k_nonzero_elements(assume_c, dimension, k)
+            c = utils.decode_vector_with_k_nonzero_elements(assume_c, dimension, alpha)
             angle = utils.get_angle_of_two_vectors(c, assume_c)
             angle_min = min(angle, angle_min)
             pbar.set_postfix({"angle_min": angle_min, "get_result_times": get_result_times})
@@ -208,13 +210,13 @@ def solve_puzzle_with_n_matrix_known_places(isometric_matrixes:List[np.ndarray],
     else:
         return None, None
 
-def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, k, threshold=40, scale=1, algorithm = "SVD", **kwargs):
+def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, alpha, threshold=40, scale=1, algorithm = "SVD", **kwargs):
     """
     kwargs: disable_tqdm, k_each_matrix(default 1)
     """
     # estimate how many times we need to test
     rtimes = 1
-    rtimes = rtimes * (2 ** (utils.subset_n_a_k(dimension, k, 1) * kwargs.get("k_each_matrix", 1)) ) ** len(isometric_matrixes)
+    rtimes = rtimes * (2 ** (utils.subset_n_a_k(dimension, alpha, 1) * kwargs.get("k_each_matrix", 1)) ) ** len(isometric_matrixes)
     rtimes = int(rtimes * scale)
     angle_min = 180
 
@@ -222,7 +224,7 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, k
         solver = submatrix_solver_scipy if len(isometric_matrixes) == (dimension - 1) else submatrix_solver_numpy
         isometric_matrixes_for_generate = isometric_matrixes
     elif algorithm == "LSA":
-        solver = lambda x: local_search_solver(dimension, k, x, iteration_number=1, disable_flag=True, threshold=kwargs.get("error_rate", 1e-1))
+        solver = lambda x: local_search_solver(dimension, alpha, x, iteration_number=1, disable_flag=True, threshold=kwargs.get("error_rate", 1e-1))
         isometric_matrixes_for_generate = [isometric_matrixes[i] @ isometric_matrixes[0].T for i in range(1, len(isometric_matrixes))]
     else:
         raise ValueError("Unknown algorithm")
@@ -237,13 +239,13 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, k
             if algorithm == "SVD":
                 assume_vector = null_vector
                 assume_b = np.matmul(isometric_matrixes[0], assume_vector)
-                b = utils.decode_vector_with_k_nonzero_elements(assume_b, dimension, k)
+                b = utils.decode_vector_with_k_nonzero_elements(assume_b, dimension, alpha)
             else:
                 assume_b = b = null_vector
                 assume_vector = isometric_matrixes[0].T @ b
             matrix_2 = isometric_matrixes[1] @ isometric_matrixes[0].T
             assume_c = matrix_2 @ b
-            c = utils.decode_vector_with_k_nonzero_elements(assume_c, dimension, k)
+            c = utils.decode_vector_with_k_nonzero_elements(assume_c, dimension, alpha)
             angle = utils.get_angle_of_two_vectors(c, assume_c)
 
             angle_min = min(angle, angle_min)
@@ -255,7 +257,7 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, k
 
 #################################################################################################################
 # one matrix MR with M has particular shape
-def solve_puzzle_with_MR(MR, n, k, threshold=35, tqdm_disable=False):
+def solve_puzzle_with_MR(MR, n, alpha, threshold=35, tqdm_disable=False):
     """
     solve original template if MR = T @ R where T is a permutation matrix with
     flip and R is a naive rotation matrix
@@ -298,7 +300,7 @@ def solve_puzzle_with_MR(MR, n, k, threshold=35, tqdm_disable=False):
     null_vector = scipy.linalg.null_space(selected_vectors)
     for i in range(null_vector.shape[1]):
         b = MR @ null_vector[:, i]
-        tmpb = utils.decode_vector_with_k_nonzero_elements(MR @ null_vector[:, i], n, k)
+        tmpb = utils.decode_vector_with_k_nonzero_elements(MR @ null_vector[:, i], n, alpha)
         if utils.get_angle_of_two_vectors(tmpb, b.reshape(-1)) < threshold:
             return MR.T @ tmpb
         
