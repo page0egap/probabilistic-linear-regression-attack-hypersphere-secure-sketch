@@ -1,9 +1,7 @@
 from typing import List
 import scipy
 import numpy as np
-import torch
 from tqdm.auto import tqdm
-from multiprocessing import Pool, Manager
 import ironmask
 from sample import random_sub_matrix_generator, random_sub_matrix_generator_with_known_places
 import utils
@@ -19,21 +17,11 @@ def submatrix_solver_scipy(submatrix:np.ndarray):
     null_vector = scipy.linalg.null_space(submatrix)[:, 0]
     return null_vector
 
-@torch.no_grad()
 def submatrix_solver_numpy(submatrix:np.ndarray):
     """
     Return the null vector of the submatrix(svd)
     """
     null_vector = np.linalg.svd(submatrix)[2][-1, :]
-    return null_vector
-
-@torch.no_grad()
-def submatrix_solver_torch(submatrix:torch.Tensor):
-    """
-    Return the null vector of the submatrix(svd)
-    """
-    _, _, Vh = torch.linalg.svd(submatrix)
-    null_vector = Vh[-1, :]
     return null_vector
 
 
@@ -98,7 +86,6 @@ def local_search_solver(dimension, k, matrix, outer_loop_number = 20, inner_loop
 
 #################################################################################################################################
 ### one matrix
-@torch.no_grad()
 def solve_puzzle_with_one_matrix(isometric_matrix:np.ndarray, dimension, alpha, each_guessing=0, threshold=40, scale=1):
     """
     (SVD optimized)Solve the puzzle only with one matrix(computed by two sketches M1, M2 as M1^T * M2, thus mapping one codeword to another); iteration_times = scale * expected iteration times with no noise
@@ -145,7 +132,6 @@ def solve_puzzle_with_one_matrix(isometric_matrix:np.ndarray, dimension, alpha, 
             continue
     return None, None
 
-@torch.no_grad()
 def solve_puzzle_with_one_matrix_TMTO(isometric_matrix:np.ndarray, dimension, k, threshold=40, scale=1):
     pass
 

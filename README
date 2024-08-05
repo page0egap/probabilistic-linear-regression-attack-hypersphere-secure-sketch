@@ -1,14 +1,15 @@
-# Probabilistic Linear Regression Attack on reversibility of IronMask 
+# Probabilistic Linear Regression Attack on reusability of IronMask 
 
-Implementation of Probabilistic Linear Regression Attack to attack the irreversibility of IronMask, which is fatial template protection scheme.
+Implementation of Probabilistic Linear Regression Attack to attack the irreusability of IronMask, which is fatial template protection scheme.
 
 
 important files:
 
 svd.ipynb -- test success rate for svd-based solver given "correct matrix"
 local_search.ipynb -- test success rate for lsa-based solver given "correct matrix"
-example.ipynb -- examples for probabilistic linear regression solver to attack on reversibility of IronMask 
+example.ipynb -- examples for probabilistic linear regression solver to attack on irreusability of IronMask 
 
 attacker.py -- implementation of probabilistic linear regression solver
-sample.py -- sampler to sample the random unit vectors and sketches
+ironmask.py -- secure sketch part of ironmask scheme
+sample.py -- sampler for simulating getting multiple sketches from biometrics
 utils.py -- useful utils for sample.py and attacker.py

@@ -52,5 +52,3 @@ def generate_secure_sketch(unprotected_template:np.ndarray, codeword:np.ndarray)
     assert np.allclose(np.eye(len(unprotected_template)), R @ R.T)
     return np.dot(R, Q)
 
-
-
