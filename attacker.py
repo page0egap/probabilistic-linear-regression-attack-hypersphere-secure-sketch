@@ -84,6 +84,17 @@ def local_search_solver(dimension, k, matrix, outer_loop_number = 20, inner_loop
             return codeword
     return None
 
+###################################################################
+## Determinant
+
+def determinant(dimension, alpha, w, matrix:np.ndarray):
+    """
+    Calculate the angle between matrix @ w and closest codeword
+    """
+    transformed_vector = matrix @ w
+    closest_codeword = ironmask.decode_codeword(transformed_vector, dimension, alpha)
+    return utils.get_angle_of_two_vectors(transformed_vector, closest_codeword)
+
 #################################################################################################################################
 ### one matrix
 def solve_puzzle_with_one_matrix(isometric_matrix:np.ndarray, dimension, alpha, each_guessing=0, threshold=40, scale=1):
@@ -192,12 +203,9 @@ def solve_puzzle_with_n_matrix_known_places(isometric_matrixes:List[np.ndarray],
                 assume_b = b = null_vector
                 assume_vector = isometric_matrixes[0].T @ b
             # threshold determinant
-            matrix_2 = isometric_matrixes[1] @ matrix_1.T
-            assume_c = matrix_2 @ b
-            c = ironmask.decode_codeword(assume_c, dimension, alpha)
-            angle = utils.get_angle_of_two_vectors(c, assume_c)
+            angle = determinant(dimension, alpha, b, isometric_matrixes[1] @ matrix_1.T)
             angle_min = min(angle, angle_min)
-            pbar.set_postfix({"angle_min": angle_min, "get_result_times": get_result_times})
+            pbar.set_postfix({"angle_min": angle, "get_result_times": get_result_times})
             if angle < threshold:
                 if kwargs.get("return_runtimes", False):
                     return assume_vector, b, run_times

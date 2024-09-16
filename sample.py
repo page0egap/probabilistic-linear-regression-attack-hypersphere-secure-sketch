@@ -9,9 +9,12 @@ def _generate_random_unit_vector_nearby(a, error_rate = 0.3):
     """
     Generate random unit vector nearby a with error_rate
 
-    implementation: just add noise to a and normalize it.
+    implementation: just add orthognal noise to a and normalize it.
     """
     noise = np.random.normal(size=len(a))
+    # make sure noise be orthognal to vector a, where a might not be unit vector
+    unit_a = a / np.linalg.norm(a)
+    noise = noise - np.dot(noise, unit_a) * unit_a
     noise = noise / np.linalg.norm(noise)
     a2 = a + error_rate * noise * np.linalg.norm(a)
     a2 = a2 / np.linalg.norm(a2)
