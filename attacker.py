@@ -236,7 +236,7 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, a
         raise ValueError("Unknown algorithm")
     
     with tqdm(total=rtimes, desc="Solving({})".format(algorithm)) as pbar:
-        for sub_matrix in random_sub_matrix_generator(isometric_matrixes_for_generate, rtimes, k_each_matrix=kwargs.get("k_each_matrix", 1)):
+        for sub_matrix in random_sub_matrix_generator(isometric_matrixes_for_generate, rtimes, k_each_matrix=kwargs.get("k_each_matrix", 1), partition=kwargs.get("partition", False)):
             pbar.update()
             pbar.set_postfix({"angle_min": angle_min})
             null_vector = solver(sub_matrix)

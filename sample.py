@@ -61,7 +61,7 @@ def generate_puzzle_n(dimension, alpha, error_rate=0.3, **kwargs):
         mapped_codeword_list.append(b)
     return unprotected_template, mapped_codeword_list, secure_sketch_list, coserror_list
 
-def random_sub_matrix_generator(isometric_matrixes, rtimes, k_each_matrix=1):
+def random_sub_matrix_generator(isometric_matrixes, rtimes, k_each_matrix=1, partition=False):
     """
     Random generate submatrix of isometric matrixes with given shape ([number of isometric_matrixes] * k_each_matrix, dimension).
 
@@ -72,15 +72,35 @@ def random_sub_matrix_generator(isometric_matrixes, rtimes, k_each_matrix=1):
     vstack_isometric_matrix = np.vstack(isometric_matrixes)
     positions_shift = [[i * dimension] * k_each_matrix for i in range(num)]
     positions_shift = [item for sublist in positions_shift for item in sublist]
-    for _ in range(rtimes):
+    if partition:
+        group_num = dimension // k_each_matrix
         if k_each_matrix == 1:
-            positions = np.random.choice(dimension, num, replace=True)
+            for _ in range(rtimes//group_num + 1):
+                perm_positions = [np.random.permutation(dimension) for _ in range(num)]
+                for i in range(group_num):
+                    positions = [perm_positions[j][i] for j in range(num)]
+                    positions = [a + b for a, b in zip(positions, positions_shift)]
+                    submatrix = vstack_isometric_matrix[positions, :]
+                    yield submatrix
         else:
-            positions = [np.random.choice(dimension, k_each_matrix, replace=False) for _ in range(num)]
-            positions = [item for sublist in positions for item in sublist]
-        positions = [a + b for a, b in zip(positions, positions_shift)]
-        submatrix = vstack_isometric_matrix[positions, :]
-        yield submatrix
+            for _ in range(rtimes//group_num + 1):
+                perm_positions = [np.random.permutation(dimension) for _ in range(num)]
+                for i in range(group_num):
+                    positions = [perm_positions[j][i*k_each_matrix:(i+1)*k_each_matrix] for j in range(num)]
+                    positions = [item for sublist in positions for item in sublist]
+                    positions = [a + b for a, b in zip(positions, positions_shift)]
+                    submatrix = vstack_isometric_matrix[positions, :]
+                    yield submatrix
+    else:
+        for _ in range(rtimes):
+            if k_each_matrix == 1:
+                positions = np.random.choice(dimension, num, replace=True)
+            else:
+                positions = [np.random.choice(dimension, k_each_matrix, replace=False) for _ in range(num)]
+                positions = [item for sublist in positions for item in sublist]
+            positions = [a + b for a, b in zip(positions, positions_shift)]
+            submatrix = vstack_isometric_matrix[positions, :]
+            yield submatrix
 
 def random_sub_matrix_generator_with_known_places(isometric_matrixes, positions_bs, rtimes, k_each_matrix=1):
     """
