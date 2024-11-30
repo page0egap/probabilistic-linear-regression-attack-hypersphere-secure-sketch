@@ -66,7 +66,7 @@ if __name__=="__main__":
     parser.add_argument("--output_dir", type=str, default="/mnt/e/Downloads/colorferet/dvd2conda/data/images_retina",)
     parser.add_argument("--image_size", type=int, default=112)
     parser.add_argument("--gpu", type=int, default=-1, help="Do not use gpu, set default -1")
-    parser.add_argument("--det_prefix", type=str, default="/mnt/e/BaiduNet/retinaface-R50/R50")
+    parser.add_argument("--det_prefix", type=str, default="")
     parser.add_argument("--align_mode", type=str, default="arcface")
 
     
