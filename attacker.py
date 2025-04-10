@@ -225,6 +225,7 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, a
     rtimes = rtimes * (2 ** (utils.subset_n_a_alpha(dimension, alpha, 1) * kwargs.get("k_each_matrix", 1)) ) ** len(isometric_matrixes)
     rtimes = int(rtimes * scale)
     angle_min = 180
+    run_times = 0
 
     if algorithm == "SVD":
         solver = submatrix_solver_scipy if len(isometric_matrixes) == (dimension - 1) else submatrix_solver_numpy
@@ -235,8 +236,9 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, a
     else:
         raise ValueError("Unknown algorithm")
     
-    with tqdm(total=rtimes, desc="Solving({})".format(algorithm)) as pbar:
+    with tqdm(total=rtimes, desc="Solving({})".format(algorithm), disable=kwargs.get("disable_tqdm", False)) as pbar:
         for sub_matrix in random_sub_matrix_generator(isometric_matrixes_for_generate, rtimes, k_each_matrix=kwargs.get("k_each_matrix", 1), partition=kwargs.get("partition", False)):
+            run_times += 1
             pbar.update()
             pbar.set_postfix({"angle_min": angle_min})
             null_vector = solver(sub_matrix)
@@ -257,8 +259,14 @@ def solve_puzzle_with_n_matrix(isometric_matrixes:List[np.ndarray], dimension, a
             angle_min = min(angle, angle_min)
             pbar.set_postfix({"angle_min": angle_min})
             if angle < threshold:
-                return assume_vector, b
-    return None, None
+                if kwargs.get("return_runtimes", False):
+                    return assume_vector, b, run_times
+                else:
+                    return assume_vector, b
+    if kwargs.get("return_runtimes", False):
+        return None, None, run_times
+    else:
+        return None, None
 
 
 #################################################################################################################

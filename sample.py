@@ -61,6 +61,30 @@ def generate_puzzle_n(dimension, alpha, error_rate=0.3, **kwargs):
         mapped_codeword_list.append(b)
     return unprotected_template, mapped_codeword_list, secure_sketch_list, coserror_list
 
+def generate_puzzle_n_with_extra_noise(dimension, alpha, error_rate=0.3, extra_noise=0.1, **kwargs):
+    """
+    Generate n puzzles with extra noise and return the isometric matrixes and the coserror between the noisy version of unprotected_template and the unprotected_template.
+
+    :param dimension: dimension of the vector
+    :param alpha: number of non-zero elements in the codeword
+    :param error_rate: error rate of the noisy version of unprotected_template
+    :param n: number of puzzles(default: dimension - 1)
+    :return: unprotected_template, mapped_codeword_list, secure_sketch_list, coserror_list
+    """
+    unprotected_template = random_unit_vector(dimension)
+    secure_sketch_list = []
+    coserror_list = []
+    mapped_codeword_list = []
+    n = kwargs.get("n", dimension-1)
+    for i in tqdm(range(n), desc="Generating Puzzles", disable=kwargs.get("disable_tqdm", False)):
+        first_noisy_template = _generate_random_unit_vector_nearby(unprotected_template, error_rate)
+        b, M, coserror = _generate_puzzle(first_noisy_template, unprotected_template.shape[0], alpha, extra_noise)
+        secure_sketch_list.append(M)
+        coserror_list.append(coserror)
+        mapped_codeword_list.append(b)
+    return unprotected_template, mapped_codeword_list, secure_sketch_list, coserror_list
+
+
 def random_sub_matrix_generator(isometric_matrixes, rtimes, k_each_matrix=1, partition=False):
     """
     Random generate submatrix of isometric matrixes with given shape ([number of isometric_matrixes] * k_each_matrix, dimension).
