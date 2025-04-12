@@ -3,30 +3,32 @@
 Implementation of Probabilistic Linear Regression Attack to attack the reusability of IronMask, which is fatial template protection scheme.
 
 
-important files:
+important notebooks:
+- svd.ipynb:  test success rate for svd-based solver given "correct matrix"
+- local_search.ipynb: test success rate for lsa-based solver given "correct matrix"
+- example.ipynb: examples for probabilistic linear regression solver to attack on reusability of IronMask 
+- noise-trade-off.ipynb: defence strategies of ironmask, including adding extra noise and salting
+- real-word-dataset.ipynb: use real world dataset to validate the attack and test the recognition performance when applying the "adding extra noise" defence
 
-svd.ipynb -- test success rate for svd-based solver given "correct matrix"
-local_search.ipynb -- test success rate for lsa-based solver given "correct matrix"
-example.ipynb -- examples for probabilistic linear regression solver to attack on reusability of IronMask 
-
-attacker.py -- implementation of probabilistic linear regression solver
-ironmask.py -- secure sketch part of ironmask scheme
-sample.py -- sampler for simulating getting multiple sketches from biometrics
-utils.py -- useful utils for sample.py and attacker.py
+important python files:
+- attacker.py: implementation of probabilistic linear regression solver
+- ironmask.py: secure sketch part of ironmask scheme
+- sample.py: sampler for simulating getting multiple sketches from biometrics
+- utils.py: useful utils for sample.py and attacker.py
 
 ## Prequsites
 
-1. `conda` enviroments
-2. `git clone insightface` in the same directory of README file
-3. Linux or WSL(WINDOWS)
+1. `conda` environments
+2. Linux or WSL(WINDOWS)
+3. `uv` environment
 
 ## Implement attack by simulating data
-1. (if not)create conda env(intel-attack-m) from file `envs/environment_intel_attack_m.yml` by command `conda env create -f environment_intel_attack_m.yml` in directory `envs`;
-2. Follow the `example.ipynb` with jupyter core(intel-attack-m).
+1. ~~(if not)create conda env(intel-attack-m) from file `envs/environment_intel_attack_m.yml` by command `conda env create -f environment_intel_attack_m.yml` in directory `envs`~~ use `uv` sync to create the venv environment;
+2. Follow the `example.ipynb` with jupyter core(~~intel-attack-m~~ .venv).
 
 ## Experiments by simulating data
-1. Follow the `local_search.ipynb` with jupyter core(intel-attack-m) for local search solver;
-2. Follow the `svd.ipynb` with jupyter core(intel-attack-m) for svd solver;
+1. Follow the `local_search.ipynb` with jupyter core(~~intel-attack-m~~ .venv) for local search solver;
+2. Follow the `svd.ipynb` with jupyter core(~~intel-attack-m~~ .venv) for svd solver;
 
 ## Experiments by real dataset(e.g. FEI dataset)
 
@@ -55,4 +57,4 @@ utils.py -- useful utils for sample.py and attacker.py
 
 ### Test in Real Dataset
 1. Download proper model from `insightface` "model zoo": https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch. Here we take ms1mv3_arcface_r100_fp16 as our backend;
-2. follow the `real-world-dataset.ipynb` notebook.
+2. follow the `real-world-dataset.ipynb` notebook(.venv).

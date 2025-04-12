@@ -2,6 +2,20 @@ import itertools
 import numpy as np
 from scipy.stats import ortho_group
 
+
+def log2c_alpha(dimension:int, alpha: int) -> float:
+    """
+    Calculate the logarithm of the number of combinations of dimension choose alpha.
+
+    :param dimension: The total number of elements.
+    :param alpha: The number of elements to select.
+    :return: The logarithm of the number of combinations.
+    """
+    result = 0
+    for i in range(alpha):
+        result += np.log2(dimension-i) - np.log2(i+1)
+    return result
+
 def subset_n_a_alpha(n, a, alpha):
     """
     Calculate the logarithm of the probability that sampled different `a` elements are all in the subset of (n - alpha) elements given n elements.

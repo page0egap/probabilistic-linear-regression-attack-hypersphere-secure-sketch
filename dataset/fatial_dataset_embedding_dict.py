@@ -128,7 +128,7 @@ class FatialDataEmbeddingsDict:
                 self._mem_size = len(self.file_path_list)
             return
         
-        loader = DataLoader(self.data_set, batch_size=batch_size, shuffle=False, pin_memory=kwargs.get("pin_memory", True),
+        loader = DataLoader(self.data_set, batch_size=batch_size, shuffle=False, pin_memory=kwargs.get("pin_memory", False),
                                 num_workers=kwargs.get("num_workers", 8))
         backbone.eval()
         # dump the embeddings with labels_dict, whose key is label and value is a list of embeddings
@@ -234,5 +234,6 @@ class FatialDataEmbeddingsDict:
     def _dump_labels_dict_to_tmp_file(self, labels_dict):
         tmp_file_path = os.path.join(self.embedding_dir, f"{datetime.datetime.now().strftime('%Y%m%d%H%M%S%f')}.pickle")
         with open(tmp_file_path, "wb") as f:
+            print("dumping labels_dict to tmp file: {}".format(tmp_file_path))
             pickle.dump(labels_dict, f)
         return tmp_file_path

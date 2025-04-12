@@ -7,13 +7,15 @@ class BackBone(torch.nn.Module):
         if platform == "pytorch":
             from insightface.recognition.arcface_torch.backbones import get_model
             model = get_model(**kwargs)
-            model.load_state_dict(torch.load(backbone_path))
+            model.load_state_dict(torch.load(backbone_path, weights_only=True))
             model.to(torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"))
             model.eval()
             self.model = PytorchModel(model)
         elif platform == "onnx":
             import onnxruntime as ort
-            providers = ["CUDAExecutionProvider", "CPUExecutionProvider"] if torch.cuda.is_available() else ["CPUExecutionProvider"]
+            # providers = ["CUDAExecutionProvider", "CPUExecutionProvider"] if torch.cuda.is_available() else ["CPUExecutionProvider"]
+            # currently cuda provider is not supported, the error may be from the onnx model insightface export
+            providers = ["CPUExecutionProvider"]
             # set session options do not show warning message
             options = ort.SessionOptions()
             options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
