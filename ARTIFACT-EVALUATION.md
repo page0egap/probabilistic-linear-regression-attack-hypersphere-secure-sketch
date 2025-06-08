@@ -3,7 +3,7 @@
 Paper title: **Hypersphere Secure Sketch Revisited: Probabilistic Linear
 Regression Attack on IronMask in Multiple Usage**
 
-Artifacts HotCRP Id: **#Enter your HotCRP Id here** (not your paper Id, but the artifacts id)
+Artifacts HotCRP Id: **#16** (not your paper Id, but the artifacts id)
 
 Requested Badge: Either **Available**, **Functional**
 
