@@ -19,7 +19,7 @@ important python files:
 ## Prequsites
 
 Hardware:
-1. Recommended: NVIDIA GPU with more than 4GB memory, or just using cpu(might be very slow)(Only needed in `Experiments by real dataset` section)
+1. Recommended: 16GB or more RAM
 
 Envs:
 
