@@ -18,8 +18,8 @@ important python files:
 
 ## Prequsites
 
-1. `conda` environments
-2. Linux or WSL(WINDOWS)
+1. `conda` environments(only for preparing real dataset)
+2. Linux or WSL(WINDOWS) or WINDOWS
 3. `uv` environment
 
 ## Implement attack by simulating data
@@ -31,6 +31,8 @@ important python files:
 2. Follow the `svd.ipynb` with jupyter core(~~intel-attack-m~~ .venv) for svd solver;
 
 ## Experiments by real dataset(e.g. FEI dataset)
+
+You might find the already prepared dataset `fei_face_dataset`. If you just want to verify, you could just use `fei_face_dataset` and skip the step "Prepare real dataset".
 
 ### Prepare real dataset
 
@@ -56,5 +58,5 @@ important python files:
     x, face_files/8-10.jpg,8
 
 ### Test in Real Dataset
-1. Download proper model from `insightface` "model zoo": https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch. Here we take ms1mv3_arcface_r100_fp16 as our backend;
+1. Download proper model from `insightface` "model zoo": https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch. Here we take ms1mv3_arcface_r100_fp16 as our backend(store in `models` directory);
 2. follow the `real-world-dataset.ipynb` notebook(.venv).

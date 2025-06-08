@@ -1,6 +1,8 @@
 # custom
 *_history/*
 tmp/
+models/
+fei_face_dataset/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
