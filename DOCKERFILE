@@ -17,3 +17,7 @@ COPY . /app
 WORKDIR /app
 RUN uv sync
 
+# CMD RUN uv jupyter notebook
+EXPOSE 8888
+CMD ["uv", "run", "jupyter", "notebook" , "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+
