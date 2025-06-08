@@ -18,21 +18,37 @@ important python files:
 
 ## Prequsites
 
-1. `conda` environments(only for preparing real dataset)
-2. Linux or WSL(WINDOWS) or WINDOWS
-3. `uv` environment
+Hardware:
+1. Recommended: NVIDIA GPU with more than 4GB memory, or just using cpu(might be very slow)(Only needed in `Experiments by real dataset` section)
 
-## Implement attack by simulating data
+Envs:
+
+1. docker and build the image by `docker build .`
+
+or
+
+1. Linux or WSL(WINDOWS) or WINDOWS
+2. `conda` environments(only for preparing real dataset) and build the envs by `conda env create -f {envfile}` by replacing {envfile} with the file in envs/;
+3. `uv` environment and build the env by `uv sync` in the root directory of this project;
+
+Tools:
+1. vscode: for connecting to the docker container or jupyter kernel;
+
+## Example: Implement attack by simulating data
 1. ~~(if not)create conda env(intel-attack-m) from file `envs/environment_intel_attack_m.yml` by command `conda env create -f environment_intel_attack_m.yml` in directory `envs`~~ use `uv` sync to create the venv environment;
 2. Follow the `example.ipynb` with jupyter core(~~intel-attack-m~~ .venv).
 
 ## Experiments by simulating data
 1. Follow the `local_search.ipynb` with jupyter core(~~intel-attack-m~~ .venv) for local search solver;
 2. Follow the `svd.ipynb` with jupyter core(~~intel-attack-m~~ .venv) for svd solver;
+3. You could adjust the parameters `k, noise_angle, threshold` to see the
+effects of these parameters or verify the paper and get results.
 
 ## Experiments by real dataset(e.g. FEI dataset)
 
 You might find the already prepared dataset `fei_face_dataset`. If you just want to verify, you could just use `fei_face_dataset` and skip the step "Prepare real dataset".
+
+Warning: `prepare real dataset` is not available for dockerfile built envs and if you want to finish the section `Test in Real Dataset`, you should prepare the dataset by yourself with same format in `Prepare real dataset` and attach dataset to the docker container.
 
 ### Prepare real dataset
 
@@ -59,4 +75,6 @@ You might find the already prepared dataset `fei_face_dataset`. If you just want
 
 ### Test in Real Dataset
 1. Download proper model from `insightface` "model zoo": https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch. Here we take ms1mv3_arcface_r100_fp16 as our backend(store in `models` directory);
-2. follow the `real-world-dataset.ipynb` notebook(.venv).
+2. follow the `real-world-dataset.ipynb` notebook(.venv)
+   
+Warning: The model should be attached to or exist in the docker image if you are using docker.
