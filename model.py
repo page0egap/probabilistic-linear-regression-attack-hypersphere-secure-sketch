@@ -7,7 +7,8 @@ class BackBone(torch.nn.Module):
         if platform == "pytorch":
             from insightface.recognition.arcface_torch.backbones import get_model
             model = get_model(**kwargs)
-            model.load_state_dict(torch.load(backbone_path, weights_only=True))
+            model.to("cpu")
+            model.load_state_dict(torch.load(backbone_path, weights_only=True, map_location=torch.device('cpu')))
             model.to(torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"))
             model.eval()
             self.model = PytorchModel(model)
