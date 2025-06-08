@@ -1,0 +1,7 @@
+FROM ghcr.io/astral-sh/uv:bookworm-slim
+
+COPY --exclude=./.venv . /app 
+
+WORKDIR /app
+RUN uv sync --locked
+
