@@ -1,6 +1,6 @@
 # Probabilistic Linear Regression Attack on reusability of IronMask 
 
-Implementation of Probabilistic Linear Regression Attack to attack the reusability of IronMask, which is fatial template protection scheme.
+Implementation of Probabilistic Linear Regression Attack to attack the reusability of IronMask, which is fatial template protection scheme. The project is mainly covering the experiments -- Section 5 of the paper "Probabilistic Linear Regression Attack on reusability of IronMask".
 
 
 important notebooks:
