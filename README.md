@@ -30,7 +30,8 @@ important python files:
 or
 
 1. Linux or WSL(WINDOWS) or WINDOWS
-2. `conda` environments(only for datasets, irrelavent to experiments) and build the envs by `conda env create -f {envfile}` by replacing {envfile} with the file in envs/;
+2. `conda` environments(only for datasets, irrelavent to experiments) and build the envs by `conda env create -f {envfile}` by replacing {envfile} with the file in envs/
+   1. Currently since intel channel is no longer available in conda, the envs/enviroment_intel_attack.yml is not available and just ignore it.
 3. `uv` environment and build the env by `uv sync` in the root directory of this project;
 
 ### Datasets:
@@ -42,6 +43,7 @@ or
    5. Build `rcnn` by command `make` in directory `insightface/detection/retinaface` with `mtcnn` env;
    6. Download retinaface-r50 model(pretrained ImageNet ResNet50) from `insightface` following the website commands: https://github.com/deepinsight/insightface/tree/master/detection/retinaface
    7. In dataset directory, preprocess the face images following the script `face_retinaface_align.py` by command `python3 face_retinaface_align.py --data_dir your_data_dir --output_dir your_output_dir --det_prefix your_retinaface_r50_dir` with replacement of proper directory paths;
+      1. `your_retinaface_r50_dir` should be like `your_path/R50` where although `R50` is not a directory, it is the prefix of the pretrained model.
 
 ## Example: Implement attack by simulating data
 1. ~~(if not)create conda env(intel-attack-m) from file `envs/environment_intel_attack_m.yml` by command `conda env create -f environment_intel_attack_m.yml` in directory `envs`~~ use `uv` sync to create the venv environment;
