@@ -23,9 +23,9 @@ important python files:
 
 ### Envs:
 
-1. docker and build the image by `docker build .`
+1. Run docker to build the image by `docker build .`(Warning: The dockerfile name must be `Dockerfile`, if found `DOCKERFILE`, please rename it to `Dockerfile`) or already built image from dockerhub `https://hub.docker.com/r/zhupengxu/hypersphere-secure-sketch-probabilistic-linear-regression-attack`.
 2. Run it by with binding port `-p 8888:8888`
-3. Open the browser and go to `localhost:8888`
+3. Open the browser and go to `localhost:8888`, you probabily need the jupyter session key which will be displayed in the terminal when you run the docker.
 
 or
 
@@ -35,12 +35,12 @@ or
 
 ### Datasets:
 1. (Only for Experiments by real dataset) You should follow the [insightface](https://github.com/deepinsight/insightface/tree/master/detection/retinaface) instructions to align and crop the face, here we give a full example of how to do it:
-   1. download FEI dataset from website: https://fei.edu.br/~cet/facedatabase.html(original images); 
-   2. extract them and put all images in the same directory;
-   3. create conda env(mtcnn) from file `envs/environment_mtcnn.yml` by command `conda env create -f environment_mtcnn.yml` in directory `envs`;
-   4. activate the enviroment by command `conda activate mtcnn`;
-   5. build `rcnn` by command `make` in directory `insightface/detection/retinaface` with `mtcnn` env;
-   6. download retinaface-r50 model(pretrained ImageNet ResNet50) from `insightface` following the website commands: https://github.com/deepinsight/insightface/tree/master/detection/retinaface
+   1. Download FEI dataset from website: https://fei.edu.br/~cet/facedatabase.html(original images); 
+   2. Extract them and put all images in the same directory;
+   3. Create conda env(mtcnn) from file `envs/environment_mtcnn.yml` by command `conda env create -f environment_mtcnn.yml` in directory `envs`;
+   4. Activate the enviroment by command `conda activate mtcnn`;
+   5. Build `rcnn` by command `make` in directory `insightface/detection/retinaface` with `mtcnn` env;
+   6. Download retinaface-r50 model(pretrained ImageNet ResNet50) from `insightface` following the website commands: https://github.com/deepinsight/insightface/tree/master/detection/retinaface
    7. In dataset directory, preprocess the face images following the script `face_retinaface_align.py` by command `python3 face_retinaface_align.py --data_dir your_data_dir --output_dir your_output_dir --det_prefix your_retinaface_r50_dir` with replacement of proper directory paths;
 
 ## Example: Implement attack by simulating data
@@ -55,7 +55,7 @@ effects of these parameters or verify the paper and get results.
 
 ## Experiments by real dataset(e.g. FEI dataset)
 
-You might find the already prepared dataset `fei_face_dataset`. If you just want to verify, you could just use `fei_face_dataset` and skip the step "Prepare real dataset".
+You might find the already prepared dataset `fei_face_dataset`(In our already built docker image). If you just want to verify, you could just use `fei_face_dataset` and skip the step "Prepare real dataset".
 
 ### Prepare real dataset
 
@@ -74,8 +74,8 @@ You might find the already prepared dataset `fei_face_dataset`. If you just want
     ...
     x, face_files/8-10.jpg,8
 
-### Test in Real Dataset
+### Testing with the Real Dataset
 1. Download proper model from `insightface` "model zoo": https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch. Here we take ms1mv3_arcface_r100_fp16 as our backend(store in `models` directory);
 2. follow the `real-world-dataset.ipynb` notebook(.venv)
    
-Warning: The model and dataset should be attached to or exist in the docker image if you are using docker.
+Warning: The model and dataset should be attached to or exist in the docker image if you are using docker. Because the docker container should be able to access the model and dataset through file system.
