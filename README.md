@@ -25,8 +25,8 @@ important python files:
 
 #### enviroments for running experiments
 
-1. Run docker to build the image by `docker build .`(Warning: The dockerfile name must be `Dockerfile`, if found `DOCKERFILE`, please rename it to `Dockerfile`) or already built image from dockerhub `https://hub.docker.com/r/zhupengxu/hypersphere-secure-sketch-probabilistic-linear-regression-attack`.
-2. Run it by with binding port `-p 8888:8888`
+1. Run docker to build the image by `docker build .` or already built image from dockerhub `https://hub.docker.com/r/zhupengxu/hypersphere-secure-sketch-probabilistic-linear-regression-attack`.
+2. Run it by with binding port `-p 8888:8888` with command `docker run -p 8888:8888 --name plra probabilistic-linear-regression-attack`
 3. Open the browser and go to `localhost:8888`, you probabily need the jupyter session key which will be displayed in the terminal when you run the docker.
 
 or 
@@ -50,8 +50,7 @@ or
       1. `your_retinaface_r50_dir` should be like `your_path/R50` where although `R50` is not a directory, it is the prefix of the pretrained model.
 
 ## Example: Implement attack by simulating data
-1. use `uv` sync to create the venv environment;
-2. Follow the `example.ipynb` with jupyter core( .venv).
+1. Follow the `example.ipynb` with jupyter core( .venv).
 
 ## Experiments by simulating data
 1. Follow the `local_search.ipynb` with jupyter core( .venv) for local search solver;
