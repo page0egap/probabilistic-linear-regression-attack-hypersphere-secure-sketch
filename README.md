@@ -23,16 +23,20 @@ important python files:
 
 ### Envs:
 
+#### enviroments for running experiments
+
 1. Run docker to build the image by `docker build .`(Warning: The dockerfile name must be `Dockerfile`, if found `DOCKERFILE`, please rename it to `Dockerfile`) or already built image from dockerhub `https://hub.docker.com/r/zhupengxu/hypersphere-secure-sketch-probabilistic-linear-regression-attack`.
 2. Run it by with binding port `-p 8888:8888`
 3. Open the browser and go to `localhost:8888`, you probabily need the jupyter session key which will be displayed in the terminal when you run the docker.
 
-or
+or 
+
+1. `uv` environment and build the env by `uv sync` in the root directory of this project;
+
+#### conda environment for dataset processing
 
 1. Linux or WSL(WINDOWS) or WINDOWS
 2. `conda` environments(only for datasets, irrelavent to experiments) and build the envs by `conda env create -f {envfile}` by replacing {envfile} with the file in envs/
-   1. Currently since intel channel is no longer available in conda, the envs/enviroment_intel_attack.yml is not available and just ignore it.
-3. `uv` environment and build the env by `uv sync` in the root directory of this project;
 
 ### Datasets:
 1. (Only for Experiments by real dataset) You should follow the [insightface](https://github.com/deepinsight/insightface/tree/master/detection/retinaface) instructions to align and crop the face, here we give a full example of how to do it:
@@ -46,12 +50,12 @@ or
       1. `your_retinaface_r50_dir` should be like `your_path/R50` where although `R50` is not a directory, it is the prefix of the pretrained model.
 
 ## Example: Implement attack by simulating data
-1. ~~(if not)create conda env(intel-attack-m) from file `envs/environment_intel_attack_m.yml` by command `conda env create -f environment_intel_attack_m.yml` in directory `envs`~~ use `uv` sync to create the venv environment;
-2. Follow the `example.ipynb` with jupyter core(~~intel-attack-m~~ .venv).
+1. use `uv` sync to create the venv environment;
+2. Follow the `example.ipynb` with jupyter core( .venv).
 
 ## Experiments by simulating data
-1. Follow the `local_search.ipynb` with jupyter core(~~intel-attack-m~~ .venv) for local search solver;
-2. Follow the `svd.ipynb` with jupyter core(~~intel-attack-m~~ .venv) for svd solver;
+1. Follow the `local_search.ipynb` with jupyter core( .venv) for local search solver;
+2. Follow the `svd.ipynb` with jupyter core( .venv) for svd solver;
 3. You could adjust the parameters `k, noise_angle, threshold` to see the
 effects of these parameters or verify the paper and get results.
 
