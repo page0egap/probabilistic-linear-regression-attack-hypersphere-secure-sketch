@@ -25,7 +25,7 @@ important python files:
 
 #### enviroments for running experiments
 
-1. Run docker to build the image by `docker build .` or already built image from dockerhub `https://hub.docker.com/r/zhupengxu/hypersphere-secure-sketch-probabilistic-linear-regression-attack`.
+1. Run docker to build the image by `docker build -t probabilistic-linear-regression-attack .` or already built image from dockerhub `https://hub.docker.com/r/zhupengxu/hypersphere-secure-sketch-probabilistic-linear-regression-attack`.
 2. Run it by with binding port `-p 8888:8888` with command `docker run -p 8888:8888 --name plra probabilistic-linear-regression-attack`
 3. Open the browser and go to `localhost:8888`, you probabily need the jupyter session key which will be displayed in the terminal when you run the docker.
 
@@ -84,3 +84,5 @@ You might find the already prepared dataset `fei_face_dataset`(In our already bu
 2. follow the `real-world-dataset.ipynb` notebook(.venv)
    
 Warning: The model and dataset should be attached to or exist in the docker image if you are using docker. Because the docker container should be able to access the model and dataset through file system.
+
+Hint: If you are using docker environment and have finished the section "Prepare real dataset", you could use command `docker run -p 8888:8888 --name plra -v /path/to/your_dataset_dir:/app/your_dataset_dir probabilistic-linear-regression-attack` to mount the dataset into the docker container. Then you could adjust the `data_fei_retinaface_path` parameter to finish the experiments. The operations for model are similar.
